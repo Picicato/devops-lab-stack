@@ -9,7 +9,7 @@ provider "azurerm" {
 
 resource "azurerm_resource_group" "rg" {
   name     = "devops-lab-rg"
-  location = "France Central"
+  location = "East US"
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
@@ -28,13 +28,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
   identity {
     type = "SystemAssigned"
   }
+}
 
-  network_profile {
-    network_plugin = "azure"
-    load_balancer_sku = "standard"
-  }
-
-  tags = {
-    environment = "dev"
-  }
+output "kube_config" {
+  value = azurerm_kubernetes_cluster.aks.kube_config_raw
+  sensitive = true
 }
