@@ -11,7 +11,6 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Cloner explicitement le dépôt si Jenkins ne le fait pas déjà
                 git branch: 'main', url: 'https://github.com/Picicato/devops-lab-stack.git'
             }
         }
@@ -28,13 +27,19 @@ pipeline {
             }
         }
 
-        stage('Deploy to AKS') {
+        stage('Deploy to AKS with Helm') {
             steps {
                 sh '''
                     az aks get-credentials --resource-group devops-lab-rg \
                                            --name devops-lab-aks \
                                            --overwrite-existing
-                    kubectl apply -f k8s-manifests/http-echo-deployment.yaml
+                    
+                    # Installer ou mettre à jour le chart Helm
+                    helm upgrade --install http-echo helm/http-echo \
+                        --namespace default \
+                        --set image.repository=hashicorp/http-echo \
+                        --set image.tag=latest \
+                        --set args[0]="-text=hello from AKS"
                 '''
             }
         }
