@@ -27,14 +27,35 @@ pipeline {
             }
         }
 
-        stage('Deploy to AKS with Helm') {
+        stage('Terraform Init & Apply') {
+            steps {
+                dir('terraform') {
+                    sh '''
+                        terraform init
+                        terraform apply -auto-approve
+                    '''
+                }
+            }
+        }
+
+        stage('Get AKS Credentials') {
             steps {
                 sh '''
                     az aks get-credentials --resource-group devops-lab-rg \
                                            --name devops-lab-aks \
                                            --overwrite-existing
-                    
-                    # Installer ou mettre à jour le chart Helm
+                '''
+            }
+        }
+
+        stage('Deploy to AKS with Helm') {
+            steps {
+                sh '''
+                    # Installer Helm si besoin
+                    if ! command -v helm &> /dev/null; then
+                      curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+                    fi
+
                     helm upgrade --install http-echo helm/http-echo \
                         --namespace default \
                         --set image.repository=hashicorp/http-echo \
