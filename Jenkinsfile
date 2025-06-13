@@ -27,20 +27,20 @@ pipeline {
             }
         }
 
-#        stage('Terraform Init & Apply') {
-#            steps {
-#                dir('terraform') {
-#                    sh '''
-#                        terraform init
-#                        terraform apply -auto-approve \
-#                            -var "clientId=$AZ_CLIENT_ID" \
-#                            -var "clientSecret=$AZ_CLIENT_SECRET" \
-#                            -var "subscriptionId=$AZ_SUBSCRIPTION_ID" \
-#                            -var "tenantId=$AZ_TENANT_ID"
-#                    '''
-#                }
-#            }
-#        }
+        #stage('Terraform Init & Apply') {
+            #steps {
+                #dir('terraform') {
+                    #sh '''
+                        #terraform init
+                        #terraform apply -auto-approve \
+                            #-var "clientId=$AZ_CLIENT_ID" \
+                            #-var "clientSecret=$AZ_CLIENT_SECRET" \
+                            #-var "subscriptionId=$AZ_SUBSCRIPTION_ID" \
+                            #-var "tenantId=$AZ_TENANT_ID"
+                    #'''
+                #}
+            #}
+        #}
 
         stage('Get AKS Credentials') {
             steps {
