@@ -11,7 +11,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Picicato/devops-lab-stack.git'
+                // Le checkout est fait automatiquement, donc on peut utiliser :
+                checkout scm
             }
         }
 
@@ -51,7 +52,6 @@ pipeline {
         stage('Deploy to AKS with Helm') {
             steps {
                 sh '''
-                    # Installer Helm si besoin
                     if ! command -v helm &> /dev/null; then
                       curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
                     fi
