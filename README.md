@@ -25,3 +25,9 @@ A complete, production-like DevOps project for local deployment, integrating:
 | Packaging     | Helm (custom chart for app deployment)            |
 | Monitoring    | Prometheus, Grafana                                |
 | Logging       | ELK Stack (Elasticsearch, Logstash, Kibana)        |
+
+---
+
+## 📊 Grafana Dashboard
+
+![Grafana/Prometheus Dashboards](screenshots/grafana-kubernetes.png)
