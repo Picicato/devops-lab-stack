@@ -52,31 +52,6 @@ pipeline {
             }
         }
 
-        stage('Clean Existing Helm Releases') {
-            steps {
-                sh '''
-                    # Uninstall existing releases (skip if not present)
-                    helm uninstall kibana -n logging || true
-                    helm uninstall elasticsearch -n logging || true
-                    helm uninstall kafka -n kafka || true
-                    helm uninstall grafana -n monitoring || true
-                    helm uninstall prometheus -n monitoring || true
-                    helm uninstall http-echo -n default || true
-
-                    # Deleting namespaces (if empty or unused)
-                    kubectl delete ns logging kafka monitoring --ignore-not-found=true
-
-                    # Wait until the namespaces are deleted
-                    for ns in logging kafka monitoring; do
-                        while kubectl get ns "$ns" &>/dev/null; do
-                            echo "Waiting for $ns namespace to be deleted..."
-                            sleep 2
-                        done
-                    done
-                '''
-            }
-        }
-
         stage('Deploy to AKS with Helm') {
             steps {
                 sh '''
