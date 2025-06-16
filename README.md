@@ -31,3 +31,7 @@ A complete, production-like DevOps project for local deployment, integrating:
 ## 📊 Grafana Dashboard
 
 ![Grafana/Prometheus Dashboards](screenshots/grafana-kubernetes.png)
+
+## 📊 ELK Dashboard
+
+![ELK](screenshots/elastic.png)
