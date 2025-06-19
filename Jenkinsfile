@@ -79,7 +79,6 @@ pipeline {
 
                     helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
                     helm repo add grafana https://grafana.github.io/helm-charts
-                    helm repo add bitnami https://charts.bitnami.com/bitnami
                     helm repo add elastic https://helm.elastic.co
                     helm repo update
 
@@ -97,9 +96,6 @@ pipeline {
                         --namespace monitoring \
                         --set adminPassword='admin' \
                         --set service.type=LoadBalancer
-
-                    helm upgrade --install kafka bitnami/kafka \
-                        --namespace kafka --create-namespace
 
                     helm upgrade --install elasticsearch elastic/elasticsearch \
                         --namespace $NAMESPACE --create-namespace \
@@ -140,6 +136,19 @@ pipeline {
                     kill $PF_PID
                 '''
             }
+        }
+	stage('Deploy Filebeat') {
+	   steps {
+               sh '''
+                   helm upgrade --install filebeat elastic/filebeat \
+                     --namespace $NAMESPACE \
+                     --set daemonset.enabled=true \
+                     --set elasticsearch.hosts[0]=http://elasticsearch-master:9200 \
+                     --set elasticsearch.username=elastic \
+                     --set elasticsearch.password=$ELASTIC_PASSWORD \
+                     --wait --timeout 5m
+               '''
+           }
         }
     }
 }
