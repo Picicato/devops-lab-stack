@@ -22,6 +22,8 @@ All infrastructure is provisioned using **Terraform**, and deployments are manag
 | Filebeat       | Lightweight log shipper for Kubernetes logs  |
 | Elasticsearch  | Log indexing and search                      |
 | Kibana         | Log visualization dashboard                  |
+| Prometheus	 | Collects metrics from Kubernetes and services|
+| Grafana	 | Dashboards for visualizing Prometheus metrics|
 
 ---
 
